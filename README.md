@@ -77,6 +77,7 @@ Here are some example visualizations using financial model comparison data:
  .adjust_colors('Set2')
  .show())
 ```
+![Box Plot](figures/boxplot_jitter.png)
 
 ### 2. Scatter Plot with Trend Line
 ```python
@@ -88,6 +89,7 @@ Here are some example visualizations using financial model comparison data:
  .adjust_colors('Set1')
  .show())
 ```
+![Scatter Plot](figures/scatter_groups.png)
 
 ### 3. Violin Plot with Data Points
 ```python
@@ -99,6 +101,7 @@ Here are some example visualizations using financial model comparison data:
  .adjust_colors('Set3')
  .show())
 ```
+![Violin Plot](figures/violin_quartiles.png)
 
 ### 4. Error Bar Plot
 ```python
@@ -111,6 +114,7 @@ Here are some example visualizations using financial model comparison data:
  .adjust_axis_text_angle(45)
  .show())
 ```
+![Error Bar Plot](figures/barplot_error.png)
 
 ## Gallery
 
