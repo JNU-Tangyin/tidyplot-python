@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='tidyplots',
+    name='tidyplots-python',
     version='0.1.0',
     packages=find_packages(),
     install_requires=[
@@ -18,8 +18,8 @@ setup(
     description='A Python implementation of R\'s tidyplots for creating publication-ready plots',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author='Codeium',
-    author_email='support@codeium.com',
+    author='Tangyin',
+    author_email='tangyin@jnu.edu.cn',
     url='https://github.com/JNU-Tangyin/tidyplots-python',
     classifiers=[
         'Development Status :: 4 - Beta',
