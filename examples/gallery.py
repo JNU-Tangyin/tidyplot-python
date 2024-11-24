@@ -1,110 +1,84 @@
-"""
-Example gallery for tidyplots.
+"""Gallery of tidyplots examples."""
 
-This script generates example plots to demonstrate the capabilities of tidyplots.
-"""
-
-import numpy as np
 import pandas as pd
-import tidyplots
+import numpy as np
+from tidyplots import TidyPlot
+import os
 
-# Create sample data
+# Create directory for figures if it doesn't exist
+os.makedirs("figures", exist_ok=True)
+
+# Generate sample data
 np.random.seed(42)
 n = 100
-
-# Time series data
-dates = pd.date_range(start='2023-01-01', periods=n)
-df = pd.DataFrame({
-    'date': dates,
-    'value': np.random.normal(0, 1, n).cumsum(),
-    'group': np.random.choice(['A', 'B', 'C'], n),
+data = pd.DataFrame({
     'x': np.random.normal(0, 1, n),
     'y': np.random.normal(0, 1, n),
-    'category': np.random.choice(['X', 'Y', 'Z'], n)
+    'group': np.random.choice(['A', 'B', 'C'], n),
+    'time': pd.date_range(start='2023-01-01', periods=n),
+    'value': np.random.normal(10, 2, n)
 })
 
-# Create figures directory if it doesn't exist
-import os
-os.makedirs('figures', exist_ok=True)
-
-# 1. Time Series with Trend Line
-(df.tidyplot(x='date', y='value')
- .add_line(alpha=0.5)
- .add_smooth(method='loess', se=True)
- .adjust_labels(title='Time Series with Trend',
-            x='Date',
-            y='Value')
+# Example 1: Time series with NPG colors
+(data.tidyplot(x='time', y='value')
+ .add_line()
+ .add_scatter()
+ .adjust_colors('npg')
+ .adjust_labels(title='Time Series Plot', x='Date', y='Value')
  .save('figures/time_series.png'))
 
-# 2. Scatter Plot with Groups
-(df.tidyplot(x='x', y='y', color='group')
- .add_scatter(alpha=0.6)
- .adjust_colors('Set2')
- .adjust_labels(title='Scatter Plot with Groups',
-            x='X Value',
-            y='Y Value')
+# Example 2: Scatter plot with groups using AAAS colors
+(data.tidyplot(x='x', y='y', color='group')
+ .add_scatter()
+ .adjust_colors('aaas')
+ .adjust_labels(title='Grouped Scatter Plot', x='X', y='Y')
  .save('figures/scatter_groups.png'))
 
-# 3. Box Plot with Jittered Points
-(df.tidyplot(x='category', y='value', color='category')
- .add_boxplot(alpha=0.3)
- .add_data_points_jitter(width=0.2, alpha=0.5)
- .adjust_colors('Set2')
- .adjust_axis_text_angle(45)
- .adjust_labels(title='Value Distribution by Category',
-            x='Category',
-            y='Value')
+# Example 3: Box plot with data points and p-values
+(data.tidyplot(x='group', y='y')
+ .add_boxplot()
+ .add_data_points(alpha=0.3)
+ .adjust_colors('nejm')
+ .add_pvalue(0.001, 0, 2, 2.5)  # Add significance between groups A and C
+ .adjust_labels(title='Box Plot with P-value', x='Group', y='Value')
  .save('figures/boxplot_jitter.png'))
 
-# 4. Violin Plot with Quartiles
-(df.tidyplot(x='group', y='value', color='group')
- .add_violin(alpha=0.4, draw_quantiles=[0.25, 0.5, 0.75])
- .adjust_colors('Set2')
- .adjust_labels(title='Value Distribution by Group',
-            x='Group',
-            y='Value')
+# Example 4: Violin plot with quartiles using Lancet colors
+(data.tidyplot(x='group', y='y')
+ .add_violin(draw_quantiles=[0.25, 0.5, 0.75])
+ .adjust_colors('lancet')
+ .adjust_labels(title='Violin Plot with Quartiles', x='Group', y='Value')
  .save('figures/violin_quartiles.png'))
 
-# 5. Density Plot with Multiple Groups
-(df.tidyplot(x='value', color='group')
- .add_density(alpha=0.3)
- .adjust_colors('Set2')
- .adjust_labels(title='Value Density by Group',
-            x='Value',
-            y='Density')
+# Example 5: Density plot with groups using JAMA colors
+(data.tidyplot(x='y', color='group')
+ .add_density(alpha=0.5)
+ .adjust_colors('jama')
+ .adjust_labels(title='Density Plot by Group', x='Value', y='Density')
  .save('figures/density_groups.png'))
 
-# 6. Hexbin Plot with Color Gradient
-(df.tidyplot(x='x', y='y')
- .add_hex(bins=20)
+# Example 6: 2D density plot with D3 colors
+(data.tidyplot(x='x', y='y')
+ .add_density_2d()
  .scale_color_gradient(low='lightblue', high='darkblue')
- .adjust_labels(title='Hexbin Plot',
-            x='X Value',
-            y='Y Value')
- .save('figures/hexbin.png'))
+ .adjust_labels(title='2D Density Plot', x='X', y='Y')
+ .save('figures/density_2d.png'))
 
-# 7. Bar Plot with Error Bars
-group_stats = df.groupby('category').agg({
-    'value': ['mean', 'std']
-}).reset_index()
-group_stats.columns = ['category', 'mean', 'std']
-
-(group_stats.tidyplot(x='category', y='mean')
- .add_mean_bar(alpha=0.6)
- .add_errorbar(ymin='mean-std', ymax='mean+std')
- .adjust_colors('Set2')
- .adjust_axis_text_angle(45)
- .adjust_labels(title='Mean Value by Category',
-            x='Category',
-            y='Mean Value')
+# Example 7: Bar plot with error bars using Material colors
+means = data.groupby('group')['y'].mean().reset_index()
+sems = data.groupby('group')['y'].sem().reset_index()
+(means.tidyplot(x='group', y='y')
+ .add_bar()
+ .add_errorbar(ymin=means['y']-sems['y'], ymax=means['y']+sems['y'])
+ .adjust_colors('material')
+ .adjust_labels(title='Bar Plot with Error Bars', x='Group', y='Value')
  .save('figures/barplot_error.png'))
 
-# 8. Scatter Plot with Trend Line and Correlation
-(df.tidyplot(x='x', y='y')
- .add_scatter(alpha=0.5)
+# Example 8: Correlation plot with IGV colors
+(data.tidyplot(x='x', y='y')
+ .add_scatter()
  .add_smooth(method='lm')
  .add_correlation_text()
- .adjust_labels(title='Correlation Plot',
-            x='X Value',
-            y='Y Value')
+ .adjust_colors('igv')
+ .adjust_labels(title='Correlation Plot', x='X', y='Y')
  .save('figures/correlation.png'))
