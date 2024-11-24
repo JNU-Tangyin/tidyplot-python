@@ -1,8 +1,8 @@
 """
-tidyplots is a Python implementation of R's tidyplots package for creating publication-ready plots.
+tidyplots is a Python library for creating publication-ready plots with a fluent, chainable interface.
 """
 
-from .tidyplots import tidyplot, TidyPlot
+from .tidyplots import TidyPlot
 
 __version__ = '0.1.0'
-__all__ = ['tidyplot', 'TidyPlot']
+__all__ = ['TidyPlot']

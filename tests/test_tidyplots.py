@@ -11,6 +11,7 @@ def sample_data():
     """Create sample data for testing."""
     np.random.seed(42)
     n = 100
+    tidyplot.FIGURE_DIR = 'figures/'
     data = pd.DataFrame({
         'x': np.random.normal(0, 1, n),
         'y': np.random.normal(0, 1, n),
