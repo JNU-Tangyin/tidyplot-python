@@ -132,6 +132,15 @@ class TidyPlot:
             
         self.plot = (ggplot(self._obj, mapping) +
                     TidyPrism.theme_prism())  # Use Prism theme by default
+        
+        # Apply NPG colors by default
+        colors = TidySci.get_palette('npg')
+        if 'y' not in mapping:
+            self.plot = self.plot + scale_fill_manual(values=colors)
+        else:
+            if color is not None:
+                self.plot = self.plot + scale_color_manual(values=colors)
+                
         return self
     
     def add_scatter(self, alpha: float = 0.6, size: float = 3):

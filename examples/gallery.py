@@ -19,18 +19,16 @@ data = pd.DataFrame({
     'value': np.random.normal(10, 2, n)
 })
 
-# Example 1: Time series with NPG colors
+# Example 1: Time series with trend
 (data.tidyplot(x='time', y='value')
  .add_line()
  .add_scatter()
- .adjust_colors('npg')
  .adjust_labels(title='Time Series Plot', x='Date', y='Value')
  .save('figures/time_series.png'))
 
-# Example 2: Scatter plot with groups using AAAS colors
+# Example 2: Scatter plot with groups
 (data.tidyplot(x='x', y='y', color='group')
  .add_scatter()
- .adjust_colors('aaas')
  .adjust_labels(title='Grouped Scatter Plot', x='X', y='Y')
  .save('figures/scatter_groups.png'))
 
@@ -38,47 +36,42 @@ data = pd.DataFrame({
 (data.tidyplot(x='group', y='y')
  .add_boxplot()
  .add_data_points(alpha=0.3)
- .adjust_colors('nejm')
  .add_pvalue(0.001, 0, 2, 2.5)  # Add significance between groups A and C
  .adjust_labels(title='Box Plot with P-value', x='Group', y='Value')
  .save('figures/boxplot_jitter.png'))
 
-# Example 4: Violin plot with quartiles using Lancet colors
+# Example 4: Violin plot with quartiles
 (data.tidyplot(x='group', y='y')
  .add_violin(draw_quantiles=[0.25, 0.5, 0.75])
- .adjust_colors('lancet')
  .adjust_labels(title='Violin Plot with Quartiles', x='Group', y='Value')
  .save('figures/violin_quartiles.png'))
 
-# Example 5: Density plot with groups using JAMA colors
+# Example 5: Density plot with groups
 (data.tidyplot(x='y', color='group')
  .add_density(alpha=0.5)
- .adjust_colors('jama')
  .adjust_labels(title='Density Plot by Group', x='Value', y='Density')
  .save('figures/density_groups.png'))
 
-# Example 6: 2D density plot with D3 colors
+# Example 6: 2D density plot
 (data.tidyplot(x='x', y='y')
  .add_density_2d()
  .scale_color_gradient(low='lightblue', high='darkblue')
  .adjust_labels(title='2D Density Plot', x='X', y='Y')
  .save('figures/density_2d.png'))
 
-# Example 7: Bar plot with error bars using Material colors
+# Example 7: Bar plot with error bars
 means = data.groupby('group')['y'].mean().reset_index()
 sems = data.groupby('group')['y'].sem().reset_index()
 (means.tidyplot(x='group', y='y')
  .add_bar()
  .add_errorbar(ymin=means['y']-sems['y'], ymax=means['y']+sems['y'])
- .adjust_colors('material')
  .adjust_labels(title='Bar Plot with Error Bars', x='Group', y='Value')
  .save('figures/barplot_error.png'))
 
-# Example 8: Correlation plot with IGV colors
+# Example 8: Correlation plot
 (data.tidyplot(x='x', y='y')
  .add_scatter()
  .add_smooth(method='lm')
  .add_correlation_text()
- .adjust_colors('igv')
  .adjust_labels(title='Correlation Plot', x='X', y='Y')
  .save('figures/correlation.png'))
